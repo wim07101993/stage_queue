@@ -21,14 +21,6 @@ jobs:
         
       - name: Pub get
         run: flutter pub get
-        
-      - name: Pub get for basic logging example
-        working-directory: example/basic_logging_example
-        run: flutter pub get
-        
-      - name: Pub get for logs viewer
-        working-directory: example/logs_viewer
-        run: flutter pub get
           
       - name: Verify formatting
         run: dart format --set-exit-if-changed .
