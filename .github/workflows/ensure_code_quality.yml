@@ -1,0 +1,51 @@
+name: Ensure code quality
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install flutter
+        uses: subosito/flutter-action@v2.8.0
+
+      - name: Install dependencies
+        run: flutter pub global activate pana
+        
+      - name: Pub get
+        run: flutter pub get
+          
+      - name: Verify formatting
+        run: dart format --set-exit-if-changed .
+
+      - name: Analyze source code
+        run: flutter analyze --fatal-infos --fatal-warnings
+
+      - name: Verify Pub Score
+        run: bin/ensure_pana_score.sh
+        
+      - name: Verify ready for publish
+        run: dart pub publish --dry-run
+        
+  test:
+    runs-on: ubuntu-latest
+    if: false
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install flutter
+        uses: subosito/flutter-action@v2.8.0
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+          flutter pub global activate coverage
+      - name: Run tests
+        run: flutter test
