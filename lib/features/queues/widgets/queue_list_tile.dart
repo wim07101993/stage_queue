@@ -10,13 +10,17 @@ class QueueListTile extends StatelessWidget {
     required this.index,
     required this.item,
     required this.isInModifyMode,
+    required this.isSelected,
     required this.onDelete,
+    required this.onTap,
   });
 
   final int index;
   final QueueItem item;
   final bool isInModifyMode;
+  final bool isSelected;
   final VoidCallback onDelete;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,24 +29,32 @@ class QueueListTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
-        color: theme.dividerColor,
+        color: isSelected ? theme.primaryColor : theme.dividerColor,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       height: 64,
-      child: Row(
-        children: [
-          Expanded(child: _contents(theme, s)),
-          const SizedBox(width: 8),
-          TriggerButton(itemToTrigger: item),
-          if (isInModifyMode) ...[
-            DeleteButton(onPressed: onDelete),
-            const SizedBox(width: 4),
-            ReorderableDragStartListener(
-              index: index,
-              child: const Icon(Icons.drag_handle),
-            ),
-          ],
-        ],
+      child: InkWell(
+        onTap: onTap,
+        customBorder: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              Expanded(child: _contents(theme, s)),
+              const SizedBox(width: 8),
+              TriggerButton(itemToTrigger: item),
+              if (isInModifyMode) ...[
+                DeleteButton(onPressed: onDelete),
+                const SizedBox(width: 4),
+                ReorderableDragStartListener(
+                  index: index,
+                  child: const Icon(Icons.drag_handle),
+                ),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -54,7 +66,7 @@ class QueueListTile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(height: 16),
-        Text(item.title ?? ''),
+        Text(item.title),
         if (description != null) ...[
           const SizedBox(height: 2),
           Text(

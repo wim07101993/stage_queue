@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:provider/provider.dart';
 import 'package:stage_queue/features/queues/widgets/queue_list.dart';
+import 'package:stage_queue/features/queues/widgets/selected_queue_item.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,9 +8,12 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: QueueList(
-        isInModifyMode: true,
-        queueItems: context.read<GetIt>()(),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: const [
+          Expanded(child: QueueList(isInModifyMode: true)),
+          SelectedQueueItem(),
+        ],
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:faker/faker.dart';
-
-import 'features/queues.dart';
+import 'package:stage_queue/test_data/features/queues.dart';
 
 class StageQueue {
   const StageQueue();

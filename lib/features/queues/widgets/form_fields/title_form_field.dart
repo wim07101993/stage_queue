@@ -6,9 +6,11 @@ class TitleFormField extends StatelessWidget {
   const TitleFormField({
     super.key,
     required this.controller,
+    this.style,
   });
 
   final TextEditingController controller;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,7 @@ class TitleFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: QueueItem.validateTitle.localize(s),
+      style: style,
       decoration: InputDecoration(
         label: Text(s.titleFieldLabel),
       ),

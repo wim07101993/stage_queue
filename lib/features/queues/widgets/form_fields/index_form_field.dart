@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stage_queue/features/queues/models/queue_item.dart';
-import 'package:stage_queue/shared/localization/localization.dart';
+import 'package:stage_queue/shared/widgets/build_context_extensions.dart';
 
 class IndexFormField extends StatelessWidget {
   const IndexFormField({
@@ -12,14 +11,16 @@ class IndexFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final s = AppLocalizations.of(context)!;
-    return TextFormField(
-      controller: controller,
-      validator: QueueItem.validateTitle.localize(s),
-      decoration: InputDecoration(
-        label: Text(s.indexFieldLabel),
-      ),
-      keyboardType: TextInputType.number,
+    final s = context.localizations;
+    return Autocomplete(
+      initialValue: controller.value,
+      optionsBuilder: (input) {
+        final inputText = input.text.toLowerCase();
+        return [
+          s.startIndexSuggestion,
+          s.endIndexSuggestion,
+        ].where((item) => item.toLowerCase().startsWith(inputText));
+      },
     );
   }
 }

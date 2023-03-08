@@ -5,8 +5,7 @@
   "@defaultQueueItemTitle": {
     "placeholders": {
       "itemNumber": {
-        "type": "int",
-        "example": 4
+        "type": "num"
       }
     }
   },
@@ -15,5 +14,7 @@
   "descriptionFieldLabel": "Description",
   "createQueueItemCreateButtonLabel": "Create",
   "createQueueItemCancelButtonLabel": "Cancel",
-  "createQueueItemDialogTitle": "New queue item"
+  "createQueueItemDialogTitle": "New queue item",
+  "startIndexSuggestion": "Start",
+  "endIndexSuggestion": "End"
 }
