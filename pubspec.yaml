@@ -11,12 +11,17 @@ dependencies:
   auto_route: ">=5.0.0 <6.0.0"
   behaviour: ">=2.0.0 <3.0.0"
   collection: ">=1.0.0 <2.0.0"
+  equatable: ">=2.0.0 <3.0.0"
+  faker:
   flutter:
     sdk: flutter
   flutter_fox_logging: ">=1.0.0 <2.0.0"
+  flutter_localizations:
+    sdk: flutter
   get_it: ">=7.0.0 <8.0.0"
   osc: ">=1.0.0 <2.0.0"
   provider: ">=6.0.0 <7.0.0"
+  uuid: ">=3.0.0 <4.0.0"
 
 dev_dependencies:
   flutter_test:
@@ -25,3 +30,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true

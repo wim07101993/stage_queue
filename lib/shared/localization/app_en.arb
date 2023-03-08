@@ -1,0 +1,19 @@
+{
+  "genericErrorMessage": "Something went wrong",
+  "titleCannotBeEmptyErrorMessage": "The title cannot be empty",
+  "defaultQueueItemTitle": "Queue item {itemNumber}",
+  "@defaultQueueItemTitle": {
+    "placeholders": {
+      "itemNumber": {
+        "type": "int",
+        "example": 4
+      }
+    }
+  },
+  "titleFieldLabel": "Title",
+  "indexFieldLabel": "Insert at",
+  "descriptionFieldLabel": "Description",
+  "createQueueItemCreateButtonLabel": "Create",
+  "createQueueItemCancelButtonLabel": "Cancel",
+  "createQueueItemDialogTitle": "New queue item"
+}
