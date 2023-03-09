@@ -9,7 +9,8 @@ class QueueItem extends Equatable {
     this.description,
     this.trigger,
     this.actions = const [],
-  }) : id = const Uuid().v4();
+    String? id,
+  }) : id = id ?? const Uuid().v4();
 
   final String id;
   final String title;

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stage_queue/features/queues/models/queue_item.dart';
 import 'package:stage_queue/features/queues/notifiers/queue_items_notifier.dart';
 import 'package:stage_queue/features/queues/widgets/form_fields/description_form_field.dart';
 import 'package:stage_queue/features/queues/widgets/form_fields/title_form_field.dart';
+import 'package:stage_queue/features/queues/widgets/save_button.dart';
 import 'package:stage_queue/shared/widgets/build_context_extensions.dart';
 
 class QueueItemDetail extends StatefulWidget {
@@ -37,6 +39,13 @@ class _QueueItemDetailState extends State<QueueItemDetail> {
     description.text = queueItemNotifier.value?.description ?? '';
   }
 
+  void save() {
+    queueItemNotifier.value = QueueItem(
+      title: title.text,
+      description: description.text,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -51,6 +60,11 @@ class _QueueItemDetailState extends State<QueueItemDetail> {
           ),
           const SizedBox(height: 16),
           DescriptionFormField(controller: description),
+          const SizedBox(height: 16),
+          Align(
+            alignment: Alignment.centerRight,
+            child: SaveButton(onTap: save),
+          ),
         ],
       ),
     );

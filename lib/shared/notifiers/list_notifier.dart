@@ -34,12 +34,18 @@ class ListNotifier<T> extends ChangeNotifier
   }
 
   T move(int oldIndex, int newIndex) {
+    final item = _items[oldIndex];
+    // moving items around is less expensive than changing the list length
     if (oldIndex < newIndex) {
-      // ignore: parameter_assignments
-      newIndex -= 1;
+      for (var i = oldIndex; i < newIndex; i++) {
+        _items[i] = _items[i + 1];
+      }
+    } else {
+      for (var i = oldIndex; i >= newIndex + 1; i--) {
+        _items[i] = _items[i - 1];
+      }
     }
-    final item = _items.removeAt(oldIndex);
-    _items.insert(newIndex, item);
+    _items[newIndex] = item;
     _notifyListeners((listener) => listener.onItemMoved(oldIndex, newIndex));
     return item;
   }

@@ -16,5 +16,6 @@
   "createQueueItemCancelButtonLabel": "Cancel",
   "createQueueItemDialogTitle": "New queue item",
   "startIndexSuggestion": "Start",
-  "endIndexSuggestion": "End"
+  "endIndexSuggestion": "End",
+  "saveButtonLabel": "Save"
 }

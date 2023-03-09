@@ -70,41 +70,58 @@ class _QueueListState extends State<QueueList> implements ListChangeListener {
   }
 
   void reorder(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      // ignore: parameter_assignments
-      newIndex -= 1;
+    final oldItemIndex = (oldIndex / 2).floor();
+    // the magic separator number is 1 or -1, it is necessary to keep move the
+    // items to the new index.
+    final magicSeparatorNumber = oldIndex < newIndex ? -1 : 1;
+    final newItemIndex = ((newIndex + magicSeparatorNumber) / 2).floor();
+    if (oldItemIndex != newItemIndex) {
+      queueItems.move(oldItemIndex, newItemIndex);
     }
-
-    if (oldIndex.isOdd) {
-      //separator - should never happen
-      return;
-    } else if ((oldIndex - newIndex).abs() == 1) {
-      //moved behind the top/bottom separator
-      return;
-    }
-
-    queueItems.move(
-      oldIndex ~/ 2,
-      oldIndex > newIndex && newIndex.isOdd
-          ? (newIndex + 1) ~/ 2
-          : newIndex ~/ 2,
-    );
   }
 
   @override
-  void onItemInserted(int index) => setState(() {});
+  void onItemInserted(int index) {
+    final selectedItemIndex = this.selectedItemIndex;
+    if (selectedItemIndex != null && index < selectedItemIndex) {
+      this.selectedItemIndex = selectedItemIndex + 1;
+    }
+    setState(() {});
+  }
 
   @override
-  void onItemMoved(int oldIndex, int newIndex) => setState(() {});
+  void onItemMoved(int oldIndex, int newIndex) {
+    final selectedItemIndex = this.selectedItemIndex;
+    if (selectedItemIndex != null) {
+      if (oldIndex < selectedItemIndex && newIndex >= selectedItemIndex) {
+        this.selectedItemIndex = selectedItemIndex - 1;
+      } else if (oldIndex > selectedItemIndex &&
+          newIndex <= selectedItemIndex) {
+        this.selectedItemIndex = selectedItemIndex + 1;
+      } else if (oldIndex == selectedItemIndex) {
+        this.selectedItemIndex = newIndex;
+      }
+    }
+    setState(() {});
+  }
 
   @override
-  void onItemRemoved(int index) => setState(() {});
+  void onItemRemoved(int index) {
+    final selectedItemIndex = this.selectedItemIndex;
+    if (selectedItemIndex != null && index < selectedItemIndex) {
+      this.selectedItemIndex = selectedItemIndex - 1;
+    }
+    setState(() {});
+  }
 
   @override
   void onItemReplaced(int index) => setState(() {});
 
   @override
-  void onResetList() => setState(() {});
+  void onResetList() {
+    selectedItemIndex = null;
+    setState(() {});
+  }
 
   void onEditingQueueItemChanged() {
     final queueItem = editingQueueItem.value;
