@@ -10,12 +10,7 @@ import 'package:stage_queue/shared/widgets/build_context_extensions.dart';
 import 'package:stage_queue/shared/widgets/multi_listenable_builder.dart';
 
 class QueueList extends StatefulWidget {
-  const QueueList({
-    super.key,
-    required this.isInModifyMode,
-  });
-
-  final bool isInModifyMode;
+  const QueueList({super.key});
 
   @override
   State<QueueList> createState() => _QueueListState();
@@ -25,20 +20,16 @@ class _QueueListState extends State<QueueList> implements ListChangeListener {
   late final QueueItemsNotifier queueItems = context.getIt();
   late final EditingQueueItemNotifier editingQueueItem = context.getIt();
 
-  int? _selectedItemIndex;
+  late int _selectedItemIndex =
+      queueItems.value.indexOf(editingQueueItem.value);
 
-  int? get selectedItemIndex => _selectedItemIndex;
-  set selectedItemIndex(int? value) {
+  int get selectedItemIndex => _selectedItemIndex;
+  set selectedItemIndex(int value) {
     if (_selectedItemIndex == value) {
       return;
     }
     _selectedItemIndex = value;
-    final selectedItemNotifier = context.getIt<EditingQueueItemNotifier>();
-    if (value != null) {
-      selectedItemNotifier.value = queueItems[value];
-    } else {
-      selectedItemNotifier.value = null;
-    }
+    editingQueueItem.value = queueItems[value];
   }
 
   @override
@@ -82,34 +73,28 @@ class _QueueListState extends State<QueueList> implements ListChangeListener {
 
   @override
   void onItemInserted(int index) {
-    final selectedItemIndex = this.selectedItemIndex;
-    if (selectedItemIndex != null && index < selectedItemIndex) {
-      this.selectedItemIndex = selectedItemIndex + 1;
+    if (index < selectedItemIndex) {
+      selectedItemIndex++;
     }
     setState(() {});
   }
 
   @override
   void onItemMoved(int oldIndex, int newIndex) {
-    final selectedItemIndex = this.selectedItemIndex;
-    if (selectedItemIndex != null) {
-      if (oldIndex < selectedItemIndex && newIndex >= selectedItemIndex) {
-        this.selectedItemIndex = selectedItemIndex - 1;
-      } else if (oldIndex > selectedItemIndex &&
-          newIndex <= selectedItemIndex) {
-        this.selectedItemIndex = selectedItemIndex + 1;
-      } else if (oldIndex == selectedItemIndex) {
-        this.selectedItemIndex = newIndex;
-      }
+    if (oldIndex < selectedItemIndex && newIndex >= selectedItemIndex) {
+      selectedItemIndex = selectedItemIndex - 1;
+    } else if (oldIndex > selectedItemIndex && newIndex <= selectedItemIndex) {
+      selectedItemIndex = selectedItemIndex + 1;
+    } else if (oldIndex == selectedItemIndex) {
+      selectedItemIndex = newIndex;
     }
     setState(() {});
   }
 
   @override
   void onItemRemoved(int index) {
-    final selectedItemIndex = this.selectedItemIndex;
-    if (selectedItemIndex != null && index < selectedItemIndex) {
-      this.selectedItemIndex = selectedItemIndex - 1;
+    if (index < selectedItemIndex) {
+      selectedItemIndex--;
     }
     setState(() {});
   }
@@ -119,58 +104,40 @@ class _QueueListState extends State<QueueList> implements ListChangeListener {
 
   @override
   void onResetList() {
-    selectedItemIndex = null;
+    selectedItemIndex = 0;
     setState(() {});
   }
 
   void onEditingQueueItemChanged() {
     final queueItem = editingQueueItem.value;
-    if (queueItem == null) {
-      selectedItemIndex = null;
-    } else {
-      final selectedItemIndex = this.selectedItemIndex;
-      if (selectedItemIndex != null) {
-        queueItems[selectedItemIndex] = queueItem;
-      }
-    }
+    queueItems[selectedItemIndex] = queueItem;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        MultiListenableBuilder(
-          listenables: [
-            queueItems,
-            context.getIt<EditingQueueItemNotifier>(),
-          ],
-          builder: (context) => SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: ReorderableListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: max(0, queueItems.value.length * 2 - 1),
-                onReorder: reorder,
-                buildDefaultDragHandles: false,
-                itemBuilder: _buildItem,
-                proxyDecorator: _buildProxyDecorator,
-              ),
-            ),
-          ),
+    final s = context.localizations;
+    return Scaffold(
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: addQueueItem,
+        icon: const Icon(Icons.add),
+        label: Text(s.addQueueItemButtonLabel),
+      ),
+      body: MultiListenableBuilder(
+        listenables: [
+          queueItems,
+          context.getIt<EditingQueueItemNotifier>(),
+        ],
+        builder: (context) => ReorderableListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: max(0, queueItems.value.length * 2 - 1),
+          onReorder: reorder,
+          buildDefaultDragHandles: false,
+          itemBuilder: _buildItem,
+          proxyDecorator: _buildProxyDecorator,
         ),
-        if (widget.isInModifyMode)
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: FloatingActionButton(
-                onPressed: addQueueItem,
-                child: const Icon(Icons.add),
-              ),
-            ),
-          ),
-      ],
+      ),
     );
   }
 
@@ -193,7 +160,6 @@ class _QueueListState extends State<QueueList> implements ListChangeListener {
               item: queueItems[itemIndex],
               index: index,
               isSelected: selectedItemIndex == itemIndex,
-              isInModifyMode: widget.isInModifyMode,
               onDelete: () => queueItems.removeAt(itemIndex),
               onTap: () => selectedItemIndex = itemIndex,
             ),

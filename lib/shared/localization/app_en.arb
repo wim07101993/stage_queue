@@ -17,5 +17,7 @@
   "createQueueItemDialogTitle": "New queue item",
   "startIndexSuggestion": "Start",
   "endIndexSuggestion": "End",
-  "saveButtonLabel": "Save"
+  "saveButtonLabel": "Save",
+  "addQueueItemButtonLabel": "Add queue item",
+  "addActionButtonLabel": "Add action item"
 }

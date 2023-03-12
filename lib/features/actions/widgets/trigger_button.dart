@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stage_queue/features/queues/models/queue_item.dart';
+import 'package:stage_queue/features/actions/models/queue_action.dart';
 
 class TriggerButton extends StatelessWidget {
   const TriggerButton({
@@ -7,7 +7,7 @@ class TriggerButton extends StatelessWidget {
     required this.itemToTrigger,
   });
 
-  final QueueItem itemToTrigger;
+  final QueueAction itemToTrigger;
 
   @override
   Widget build(BuildContext context) {

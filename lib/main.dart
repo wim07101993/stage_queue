@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stage_queue/app.dart';
+import 'package:stage_queue/features/actions/actions_installer.dart';
 import 'package:stage_queue/features/queues/queues_installer.dart';
 import 'package:stage_queue/shared/installer/get_it_extensions.dart';
 import 'package:stage_queue/shared/installer/installer.dart';
@@ -27,10 +28,12 @@ extension _MainGetItExtensions on GetIt {
   void registerInstallers() {
     registerSingleton(LoggingInstaller());
     registerSingleton(QueuesInstaller());
+    registerSingleton(ActionsInstaller());
     registerLazySingleton<List<Installer>>(
       () => [
         get<LoggingInstaller>(),
         get<QueuesInstaller>(),
+        get<ActionsInstaller>(),
       ],
     );
   }

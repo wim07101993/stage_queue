@@ -1,18 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:stage_queue/features/actions/models/queue_action.dart';
+import 'package:stage_queue/features/actions/notifiers/actions_notifier.dart';
+import 'package:stage_queue/features/actions/widgets/actions_list.dart';
 import 'package:stage_queue/features/queues/widgets/queue_list.dart';
 import 'package:stage_queue/features/queues/widgets/selected_queue_item.dart';
+import 'package:stage_queue/shared/widgets/build_context_extensions.dart';
+import 'package:stage_queue/shared/widgets/master_detail.dart';
+import 'package:stage_queue/shared/widgets/multi_listenable_builder.dart';
 
-class HomeScreen extends StatelessWidget {
+enum ListTab {
+  queueItems(0),
+  actions(1);
+
+  const ListTab(this.tabIndex);
+
+  final int tabIndex;
+
+  static ListTab fromTabIndex(int tabIndex) {
+    return ListTab.values.firstWhere((value) => value.tabIndex == tabIndex);
+  }
+}
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late final tabController = TabController(
+    length: ListTab.values.length,
+    vsync: this,
+  );
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: const [
-          Expanded(child: QueueList(isInModifyMode: true)),
-          SelectedQueueItem(),
+      bottomNavigationBar: MultiListenableBuilder(
+        listenables: [tabController],
+        builder: (context) => BottomNavigationBar(
+          currentIndex: tabController.index,
+          onTap: (index) => tabController.animateTo(index),
+          items: const [
+            BottomNavigationBarItem(
+                label: 'Queue items', icon: Icon(Icons.list)),
+            BottomNavigationBarItem(
+              label: 'Actions',
+              icon: Icon(Icons.play_circle),
+            ),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: tabController,
+        children: [
+          MasterDetail(
+            masterBuilder: (context) => const QueueList(),
+            detailBuilder: (context) => const SelectedQueueItem(),
+          ),
+          MasterDetail(
+            masterBuilder: (context) => const ActionsList(),
+            detailBuilder: (context) => ValueListenableBuilder<QueueAction>(
+              valueListenable: context.getIt<EditingActionNotifier>(),
+              builder: (context, value, _) => value.detailWidget(context),
+            ),
+          ),
         ],
       ),
     );

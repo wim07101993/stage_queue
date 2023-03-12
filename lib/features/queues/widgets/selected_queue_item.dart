@@ -21,19 +21,15 @@ class SelectedQueueItem extends StatelessWidget {
 
   Widget _build(BuildContext context, QueueItem queueItem) {
     final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
-    return SizedBox(
-      width: mediaQuery.size.width / 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Container(
-          padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            color: theme.dividerColor,
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-          ),
-          child: const QueueItemDetail(),
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Container(
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          color: theme.dividerColor,
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
         ),
+        child: const QueueItemDetail(),
       ),
     );
   }

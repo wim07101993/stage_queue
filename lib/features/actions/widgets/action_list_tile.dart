@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:stage_queue/features/queues/models/queue_item.dart';
-import 'package:stage_queue/features/queues/widgets/delete_button.dart';
-import 'package:stage_queue/features/queues/widgets/trigger_button.dart';
+import 'package:stage_queue/features/actions/models/queue_action.dart';
+import 'package:stage_queue/features/actions/widgets/delete_button.dart';
+import 'package:stage_queue/features/actions/widgets/trigger_button.dart';
 import 'package:stage_queue/shared/localization/localization.dart';
 
-class QueueListTile extends StatelessWidget {
-  const QueueListTile({
+class ActionListTile extends StatelessWidget {
+  const ActionListTile({
     super.key,
-    required this.index,
     required this.item,
     required this.isSelected,
-    required this.onDelete,
     required this.onTap,
+    required this.onDelete,
   });
 
-  final int index;
-  final QueueItem item;
+  final QueueAction item;
   final bool isSelected;
-  final VoidCallback onDelete;
   final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +37,10 @@ class QueueListTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             children: [
-              Expanded(child: _contents(theme, s)),
+              Expanded(child: _contents(context)),
               const SizedBox(width: 8),
               TriggerButton(itemToTrigger: item),
               DeleteButton(onPressed: onDelete),
-              const SizedBox(width: 4),
-              ReorderableDragStartListener(
-                index: index,
-                child: const Icon(Icons.drag_handle),
-              ),
             ],
           ),
         ),
@@ -55,22 +48,20 @@ class QueueListTile extends StatelessWidget {
     );
   }
 
-  Widget _contents(ThemeData theme, AppLocalizations s) {
-    final description = item.description;
+  Widget _contents(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(height: 16),
-        Text(item.title),
-        if (description != null) ...[
-          const SizedBox(height: 2),
-          Text(
-            description,
-            style: theme.textTheme.bodySmall,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            item.icon(context),
+            const SizedBox(width: 12),
+            item.listTileContent(context),
+          ],
+        ),
         const SizedBox(height: 16),
       ],
     );

@@ -1,24 +1,24 @@
 import 'package:faker/faker.dart';
-import 'package:stage_queue/features/queues/notifiers/queue_items_notifier.dart';
+import 'package:stage_queue/features/actions/notifiers/actions_notifier.dart';
 import 'package:stage_queue/shared/installer/installer.dart';
 import 'package:stage_queue/test_data/faker_extensions.dart';
 
-class QueuesInstaller extends Installer {
+class ActionsInstaller extends Installer {
   @override
   void registerDependenciesInternal(GetIt getIt) {
     getIt.registerLazySingleton(
-      () => QueueItemsNotifier(),
+      () => ActionsNotifier(),
       dispose: (notifier) => notifier.dispose(),
     );
     getIt.registerLazySingleton(
-      () => EditingQueueItemNotifier(getIt<QueueItemsNotifier>().first),
+      () => EditingActionNotifier(getIt<ActionsNotifier>().first),
       dispose: (notifier) => notifier.dispose(),
     );
   }
 
   @override
   Future<void> installInternal(GetIt getIt) {
-    getIt<QueueItemsNotifier>().value = faker.stageQueue.queues.queueItemList();
+    getIt<ActionsNotifier>().value = faker.stageQueue.actions.queueActionList();
 
     return Future.value();
   }

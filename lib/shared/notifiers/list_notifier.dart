@@ -22,6 +22,8 @@ class ListNotifier<T> extends ChangeNotifier
 
   int get length => _items.length;
 
+  T get first => _items.first;
+
   void insert(int index, T item) {
     _items.insert(index, item);
     _notifyListeners((listener) => listener.onItemInserted(index));
