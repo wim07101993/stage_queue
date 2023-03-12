@@ -1,9 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:stage_queue/features/actions/widgets/action_widgets/print_action_detail.dart';
 import 'package:stage_queue/features/actions/widgets/action_widgets/print_action_list_tile.dart';
 import 'package:uuid/uuid.dart';
-
-import '../widgets/action_widgets/print_action_detail.dart';
 
 abstract class QueueAction extends Equatable {
   QueueAction({

@@ -37,19 +37,21 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final s = context.localizations;
     return Scaffold(
       bottomNavigationBar: MultiListenableBuilder(
         listenables: [tabController],
         builder: (context) => BottomNavigationBar(
           currentIndex: tabController.index,
           onTap: (index) => tabController.animateTo(index),
-          items: const [
+          items: [
             BottomNavigationBarItem(
-                label: 'Queue items', icon: Icon(Icons.list)),
+              label: s.queueItemsTabLabel,
+              icon: const Icon(Icons.list),
+            ),
             BottomNavigationBarItem(
-              label: 'Actions',
-              icon: Icon(Icons.play_circle),
+              label: s.actionsTabLabel,
+              icon: const Icon(Icons.play_circle),
             ),
           ],
         ),

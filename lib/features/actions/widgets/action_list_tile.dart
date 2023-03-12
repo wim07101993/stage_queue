@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stage_queue/features/actions/models/queue_action.dart';
 import 'package:stage_queue/features/actions/widgets/delete_button.dart';
 import 'package:stage_queue/features/actions/widgets/trigger_button.dart';
-import 'package:stage_queue/shared/localization/localization.dart';
 
 class ActionListTile extends StatelessWidget {
   const ActionListTile({
@@ -21,7 +20,6 @@ class ActionListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final s = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(16)),

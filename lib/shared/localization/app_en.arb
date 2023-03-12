@@ -19,5 +19,7 @@
   "endIndexSuggestion": "End",
   "saveButtonLabel": "Save",
   "addQueueItemButtonLabel": "Add queue item",
-  "addActionButtonLabel": "Add action item"
+  "addActionButtonLabel": "Add action item",
+  "queueItemsTabLabel": "Queue",
+  "actionsTabLabel": "Actions"
 }
