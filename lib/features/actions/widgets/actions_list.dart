@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stage_queue/features/actions/models/queue_action_data.dart';
 import 'package:stage_queue/features/actions/notifiers/actions_notifier.dart';
 import 'package:stage_queue/features/actions/widgets/action_list_tile.dart';
 import 'package:stage_queue/shared/widgets/build_context_extensions.dart';
@@ -12,8 +13,9 @@ class ActionsList extends StatefulWidget {
 }
 
 class _ActionsListState extends State<ActionsList> {
-  late final ActionsNotifier actions = context.getIt();
-  late final EditingActionNotifier editingAction = context.getIt();
+  late final ActionsNotifier<QueueActionData> actions = context.getIt();
+  late final EditingActionNotifier<QueueActionData> editingAction =
+      context.getIt();
 
   late int _selectedItemIndex = actions.value.indexOf(editingAction.value);
 
@@ -50,7 +52,7 @@ class _ActionsListState extends State<ActionsList> {
               bottom: i < actions.length ? 4 : 0,
             ),
             child: ActionListTile(
-              item: actions[i],
+              action: actions[i],
               isSelected: selectedItemIndex == i,
               onTap: () => selectedItemIndex = i,
               onDelete: () => actions.removeAt(i),
