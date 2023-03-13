@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stage_queue/features/actions/models/queue_action.dart';
-import 'package:stage_queue/features/actions/models/queue_action_data.dart';
 import 'package:stage_queue/features/actions/notifiers/actions_notifier.dart';
 import 'package:stage_queue/features/actions/widgets/actions_list.dart';
 import 'package:stage_queue/features/queues/widgets/queue_list.dart';
@@ -67,12 +66,9 @@ class _HomeScreenState extends State<HomeScreen>
           MasterDetail(
             masterBuilder: (context) => const ActionsList(),
             detailBuilder: (context) {
-              return ValueListenableBuilder<QueueAction<QueueActionData>>(
-                valueListenable:
-                    context.getIt<EditingActionNotifier<QueueActionData>>(),
-                builder: (context, action, _) {
-                  return action.data.detailWidget(context);
-                },
+              return ValueListenableBuilder<QueueAction>(
+                valueListenable: context.getIt<EditingActionNotifier>(),
+                builder: (context, action, _) => action.detailWidget(context),
               );
             },
           ),

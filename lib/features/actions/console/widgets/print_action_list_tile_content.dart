@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stage_queue/features/actions/console/console_action_data.dart';
+import 'package:stage_queue/features/actions/console/console_action.dart';
 
 class PrintActionListTileContent extends StatelessWidget {
   const PrintActionListTileContent({
@@ -7,7 +7,7 @@ class PrintActionListTileContent extends StatelessWidget {
     required this.data,
   });
 
-  final ConsoleActionData data;
+  final ConsoleAction data;
 
   @override
   Widget build(BuildContext context) {

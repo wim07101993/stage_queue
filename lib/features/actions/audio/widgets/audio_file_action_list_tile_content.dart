@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:stage_queue/features/actions/audio/audio_file_action_data.dart';
+import 'package:stage_queue/features/actions/audio/audio_file_action.dart';
 
 class AudioFileActionListTileContent extends StatelessWidget {
   const AudioFileActionListTileContent({
     super.key,
-    required this.data,
+    required this.action,
   });
 
-  final AudioFileActionData data;
+  final AudioFileAction action;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Text(
-        data.filePath,
+        action.filePath,
         overflow: TextOverflow.ellipsis,
       ),
     );

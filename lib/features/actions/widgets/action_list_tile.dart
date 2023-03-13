@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stage_queue/features/actions/models/queue_action.dart';
-import 'package:stage_queue/features/actions/models/queue_action_data.dart';
 import 'package:stage_queue/features/actions/widgets/delete_button.dart';
 import 'package:stage_queue/features/actions/widgets/trigger_button.dart';
 
@@ -13,7 +12,7 @@ class ActionListTile extends StatelessWidget {
     required this.onDelete,
   });
 
-  final QueueAction<QueueActionData> action;
+  final QueueAction action;
   final bool isSelected;
   final VoidCallback onTap;
   final VoidCallback onDelete;
@@ -56,9 +55,9 @@ class ActionListTile extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            action.data.icon(context),
+            action.icon(context),
             const SizedBox(width: 12),
-            action.data.listTileContent(context),
+            action.listTileContent(context),
           ],
         ),
         const SizedBox(height: 16),

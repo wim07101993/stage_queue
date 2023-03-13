@@ -1,10 +1,13 @@
 import 'package:faker/faker.dart';
-import 'package:stage_queue/features/actions/console/console_action_data.dart';
+import 'package:flutter/material.dart';
+import 'package:stage_queue/features/actions/console/widgets/print_action_detail.dart';
+import 'package:stage_queue/features/actions/console/widgets/print_action_list_tile_content.dart';
 import 'package:stage_queue/features/actions/models/queue_action.dart';
 
-class ConsoleAction extends QueueAction<ConsoleActionData> {
+class ConsoleAction extends QueueAction {
   ConsoleAction({
-    required super.data,
+    required super.description,
+    super.id,
   });
 
   @override
@@ -16,7 +19,20 @@ class ConsoleAction extends QueueAction<ConsoleActionData> {
 
   @override
   Future<void> execute() {
-    print(data.description);
+    print(description);
     return Future.value();
+  }
+
+  @override
+  Widget icon(BuildContext context) => const Icon(Icons.developer_mode);
+
+  @override
+  Widget listTileContent(BuildContext context) {
+    return PrintActionListTileContent(data: this);
+  }
+
+  @override
+  Widget detailWidget(BuildContext context) {
+    return PrintActionDetail(action: this);
   }
 }
