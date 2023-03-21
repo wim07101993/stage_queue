@@ -9,6 +9,17 @@ extension InstallerGetItExtensions on GetIt {
       ..sorted((a, b) => a.key.compareTo(b.key));
   }
 
+  T? tryGet<T extends Object>({
+    String? instanceName,
+    dynamic param1,
+    dynamic param2,
+  }) {
+    if (!isRegistered<T>(instanceName: instanceName)) {
+      return null;
+    }
+    return get<T>(instanceName: instanceName, param1: param1, param2: param2);
+  }
+
   void registerDependencies() {
     for (final installer in installersByPriority.mapMany((e) => e.value)) {
       installer.registerDependencies(this);

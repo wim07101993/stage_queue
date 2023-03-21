@@ -11,7 +11,8 @@
   },
   "titleFieldLabel": "Title",
   "indexFieldLabel": "Insert at",
-  "descriptionFieldLabel": "Description",
+  "queueItemDescriptionFieldLabel": "Description",
+  "queueActionDescriptionFieldLabel": "Description",
   "createQueueItemCreateButtonLabel": "Create",
   "createQueueItemCancelButtonLabel": "Cancel",
   "createQueueItemDialogTitle": "New queue item",
@@ -21,5 +22,8 @@
   "addQueueItemButtonLabel": "Add queue item",
   "addActionButtonLabel": "Add action item",
   "queueItemsTabLabel": "Queue",
-  "actionsTabLabel": "Actions"
+  "actionsTabLabel": "Actions",
+  "selectAudioFileButtonLabel": "Select audio file",
+  "newAudioFileActionTitle": "New audio file action",
+  "audioFilePickerDialogTitle": "Select an audio file"
 }

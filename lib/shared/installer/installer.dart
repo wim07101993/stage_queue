@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_fox_logging/flutter_fox_logging.dart';
 import 'package:get_it/get_it.dart';
+import 'package:stage_queue/shared/installer/get_it_extensions.dart';
 import 'package:stage_queue/shared/logging/get_it_extensions.dart';
+import 'package:stage_queue/shared/logging/logging_installer.dart';
 
 export 'package:flutter_fox_logging/flutter_fox_logging.dart';
 export 'package:get_it/get_it.dart';
@@ -14,7 +16,7 @@ class Installer {
   /// Indicates the priority of the installer. Number 1 is the highest priority.
   ///
   /// The higher the number, the lower the priority. Defaults to 100.
-  int priority = 100;
+  final int priority = 100;
 
   bool get hasRegisteredDependencies => _hasRegisteredDependencies;
   bool get hasInstalled => _hasInstalled;
@@ -23,7 +25,8 @@ class Installer {
     if (_logger != null) {
       return _logger;
     }
-    if (!getIt.isRegistered<Logger>()) {
+    if (getIt.tryGet<LoggingInstaller>()?.hasInstalled != true ||
+        !getIt.isRegistered<Logger>()) {
       return null;
     }
     return _logger = getIt.logger(

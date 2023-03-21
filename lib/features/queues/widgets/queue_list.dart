@@ -20,16 +20,19 @@ class _QueueListState extends State<QueueList> implements ListChangeListener {
   late final QueueItemsNotifier queueItems = context.getIt();
   late final EditingQueueItemNotifier editingQueueItem = context.getIt();
 
-  late int _selectedItemIndex =
-      queueItems.value.indexOf(editingQueueItem.value);
+  int? _selectedItemIndex;
 
-  int get selectedItemIndex => _selectedItemIndex;
-  set selectedItemIndex(int value) {
+  int? get selectedItemIndex => _selectedItemIndex;
+  set selectedItemIndex(int? value) {
     if (_selectedItemIndex == value) {
       return;
     }
     _selectedItemIndex = value;
-    editingQueueItem.value = queueItems[value];
+    if (value == null) {
+      editingQueueItem.value = null;
+    } else {
+      editingQueueItem.value = queueItems[value];
+    }
   }
 
   @override
@@ -37,6 +40,10 @@ class _QueueListState extends State<QueueList> implements ListChangeListener {
     super.initState();
     queueItems.addChangeListener(this);
     editingQueueItem.addListener(onEditingQueueItemChanged);
+    final selectedItem = editingQueueItem.value;
+    if (selectedItem != null) {
+      _selectedItemIndex = queueItems.value.indexOf(selectedItem);
+    }
   }
 
   @override
@@ -73,28 +80,34 @@ class _QueueListState extends State<QueueList> implements ListChangeListener {
 
   @override
   void onItemInserted(int index) {
-    if (index < selectedItemIndex) {
-      selectedItemIndex++;
+    final selectedItemIndex = this.selectedItemIndex;
+    if (selectedItemIndex != null && index < selectedItemIndex) {
+      this.selectedItemIndex = selectedItemIndex + 1;
     }
     setState(() {});
   }
 
   @override
   void onItemMoved(int oldIndex, int newIndex) {
-    if (oldIndex < selectedItemIndex && newIndex >= selectedItemIndex) {
-      selectedItemIndex = selectedItemIndex - 1;
-    } else if (oldIndex > selectedItemIndex && newIndex <= selectedItemIndex) {
-      selectedItemIndex = selectedItemIndex + 1;
-    } else if (oldIndex == selectedItemIndex) {
-      selectedItemIndex = newIndex;
+    final selectedItemIndex = this.selectedItemIndex;
+    if (selectedItemIndex != null) {
+      if (oldIndex < selectedItemIndex && newIndex >= selectedItemIndex) {
+        this.selectedItemIndex = selectedItemIndex - 1;
+      } else if (oldIndex > selectedItemIndex &&
+          newIndex <= selectedItemIndex) {
+        this.selectedItemIndex = selectedItemIndex + 1;
+      } else if (oldIndex == selectedItemIndex) {
+        this.selectedItemIndex = newIndex;
+      }
     }
     setState(() {});
   }
 
   @override
   void onItemRemoved(int index) {
-    if (index < selectedItemIndex) {
-      selectedItemIndex--;
+    final selectedItemIndex = this.selectedItemIndex;
+    if (selectedItemIndex != null && index < selectedItemIndex) {
+      this.selectedItemIndex = selectedItemIndex - 1;
     }
     setState(() {});
   }
@@ -109,8 +122,11 @@ class _QueueListState extends State<QueueList> implements ListChangeListener {
   }
 
   void onEditingQueueItemChanged() {
+    final selectedItemIndex = this.selectedItemIndex;
     final queueItem = editingQueueItem.value;
-    queueItems[selectedItemIndex] = queueItem;
+    if (selectedItemIndex != null && queueItem != null) {
+      queueItems[selectedItemIndex] = queueItem;
+    }
   }
 
   @override

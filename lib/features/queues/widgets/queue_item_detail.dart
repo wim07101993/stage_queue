@@ -35,8 +35,8 @@ class _QueueItemDetailState extends State<QueueItemDetail> {
   }
 
   void onItemChanged() {
-    title.text = queueItemNotifier.value.title;
-    description.text = queueItemNotifier.value.description ?? '';
+    title.text = queueItemNotifier.value?.title ?? '';
+    description.text = queueItemNotifier.value?.description ?? '';
   }
 
   void save() {

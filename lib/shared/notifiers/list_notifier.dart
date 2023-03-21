@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 class ListNotifier<T> extends ChangeNotifier
@@ -22,7 +23,13 @@ class ListNotifier<T> extends ChangeNotifier
 
   int get length => _items.length;
 
-  T get first => _items.first;
+  T? get firstOrNull => _items.firstOrNull;
+
+  void add(T item) {
+    final insertionIndex = _items.length;
+    _items.add(item);
+    _notifyListeners((listener) => listener.onItemInserted(insertionIndex));
+  }
 
   void insert(int index, T item) {
     _items.insert(index, item);

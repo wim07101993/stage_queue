@@ -7,6 +7,7 @@ import 'package:stage_queue/features/actions/models/queue_action.dart';
 class ConsoleAction extends QueueAction {
   ConsoleAction({
     required super.description,
+    required super.logger,
     super.id,
   });
 
@@ -18,7 +19,7 @@ class ConsoleAction extends QueueAction {
   }
 
   @override
-  Future<void> execute() {
+  Future<void> executeInternal() {
     print(description);
     return Future.value();
   }

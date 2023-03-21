@@ -16,7 +16,7 @@ class TriggerButton extends StatelessWidget {
       builder: (context, snapshot) {
         return snapshot.connectionState == ConnectionState.done
             ? IconButton(
-                onPressed: action.execute,
+                onPressed: action,
                 icon: const Icon(Icons.play_arrow, color: Colors.green),
               )
             : const IconButton(

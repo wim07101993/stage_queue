@@ -15,18 +15,33 @@ class _ActionsListState extends State<ActionsList> {
   late final ActionsNotifier actions = context.getIt();
   late final EditingActionNotifier editingAction = context.getIt();
 
-  late int _selectedItemIndex = actions.value.indexOf(editingAction.value);
+  int? _selectedItemIndex;
 
-  int get selectedItemIndex => _selectedItemIndex;
-  set selectedItemIndex(int value) {
+  int? get selectedItemIndex => _selectedItemIndex;
+  set selectedItemIndex(int? value) {
     if (_selectedItemIndex == value) {
       return;
     }
     _selectedItemIndex = value;
-    editingAction.value = actions[value];
+    if (value == null) {
+      editingAction.value = null;
+    } else {
+      editingAction.value = actions[value];
+    }
   }
 
-  void addAction() {}
+  void addAction() {
+    // TODO
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final selectedAction = editingAction.value;
+    if (selectedAction != null) {
+      _selectedItemIndex = actions.value.indexOf(selectedAction);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

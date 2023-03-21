@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stage_queue/features/queues/models/queue_item.dart';
+import 'package:stage_queue/features/actions/models/queue_action.dart';
 import 'package:stage_queue/shared/localization/localization.dart';
 
 class DescriptionFormField extends StatelessWidget {
@@ -15,9 +15,9 @@ class DescriptionFormField extends StatelessWidget {
     final s = AppLocalizations.of(context)!;
     return TextFormField(
       controller: controller,
-      validator: QueueItem.validateDescription.localize(s),
+      validator: QueueAction.validateDescription.localize(s),
       decoration: InputDecoration(
-        label: Text(s.queueItemDescriptionFieldLabel),
+        label: Text(s.queueActionDescriptionFieldLabel),
       ),
     );
   }

@@ -65,12 +65,12 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           MasterDetail(
             masterBuilder: (context) => const ActionsList(),
-            detailBuilder: (context) {
-              return ValueListenableBuilder<QueueAction>(
-                valueListenable: context.getIt<EditingActionNotifier>(),
-                builder: (context, action, _) => action.detailWidget(context),
-              );
-            },
+            detailBuilder: (context) => ValueListenableBuilder<QueueAction?>(
+              valueListenable: context.getIt<EditingActionNotifier>(),
+              builder: (context, action, _) {
+                return action?.detailWidget(context) ?? const SizedBox();
+              },
+            ),
           ),
         ],
       ),
